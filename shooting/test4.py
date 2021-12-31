@@ -1,37 +1,12 @@
-# This is a sample Python script.
 
-# Press Shift+F10 to execute it or replace it with your code.
-# Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
-
-# -*- cod
-#
-# ing:utf-8 -*-
-# file: TkinterCanvas.py
-#
 # import tkinter  # 导入Tkinter模块
 from PIL import Image, ImageTk
 import tkinter.messagebox
 import math
-
-
 import numpy as np
-import time
-
 from readdata.VideoShape1 import ShapeAnalysis
-
-
-import cv2
 import threading
-
-
 import cv2 as cv
-
-
-
-import  time
-
-
-import _thread
 import time
 
 
@@ -55,6 +30,7 @@ def startkey(threadList):
 
 
 def video_capture():
+    global plottrack
     begin_time = time.time()
     start_time = begin_time
     url = 'http://192.168.1.57:81/stream'
@@ -136,22 +112,13 @@ def video_capture():
 
                         cv.line(src, (px - 4, py), (px + 4, py), (0, 0, 255), thickness=2)
                         cv.line(src, (px, py - 4), (px, py + 4), (0, 0, 255), thickness=2)
-                        # cv.imshow('Target', src)
+                        cv.imshow('Target', src)
 
-                        global ttt
-                        # line=0
-                        #
-                        # pixTuple = (255, 0, 255, 15)  ###三个参数依次为R,G,B,A   R：红 G:绿 B:蓝 A:透明度
-                        # oldi=0
-                        # pox = event.x-13
-                        # poy = event.y-92
-
-                        # print("点击位置：",event.x,event.y)
 
                         px=int(px*2.5)
                         py=int(py*2.5)
                         print("点击位置：", px, py)
-                        ttt = canvas1.create_oval(px, py, px + 10, py + 10, fill="blue")
+                        plottrack = canvas1.create_oval(px, py, px + 10, py + 10, fill="blue")
 
                         y = py
                         realy = -4.8152 + (209.78461 / (1 + ((y / 32.21135) ** 1.3252)))
@@ -167,17 +134,17 @@ def video_capture():
                         elif z > 405:
                             q = 15 + ((z - 405) / ((405 - ccc) / 7))
                         else:
-                            q = 405
+                            q = 0
 
                         # print(q)
 
-                        realy = 110 + (14.5 * (39 - realy))
+                        realy = 110 + (16 * (39 - realy))
                         realx = 16.5 * q + 60
 
                         print("对应转换坐标：", str(realx), str(realy))
                         # print(realy)
-                        ttt = canvas.create_oval(realx, realy, realx + 10, realy + 10, fill="blue")
-                        x.append(ttt)
+                        plottrack = canvas.create_oval(realx, realy, realx + 10, realy + 10, fill="blue")
+                        x.append(plottrack)
 
 
 
@@ -217,20 +184,10 @@ def video_capture():
     cv.destroyAllWindows()
 
 
-def hustime():
-    while True:
-        t=time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
-        print (t[-2:])
-        sss=canvas.create_oval(int(t[-2:])*10, int(t[-2:])*10, int(t[-2:])*10 + 10, int(t[-2:])*10+ 10, fill="blue")
-        x.append(sss)
-
-        # print ("huhuhu")
-        time.sleep(5)
-        # print ("   ")
 
 
 
-def helloCallBack():
+def CallBack():
     result = tkinter.messagebox.askokcancel(title='标题~', message='内容：确认设置？')
 
 
@@ -238,8 +195,8 @@ def helloCallBack():
 
     print(result)
 
-def callbbb(event):
-    global ttt
+def clickcanvas(event):
+    global plottrack
     line=0
 
     pixTuple = (255, 0, 255, 15)  ###三个参数依次为R,G,B,A   R：红 G:绿 B:蓝 A:透明度
@@ -249,9 +206,9 @@ def callbbb(event):
 
     # print("点击位置：",event.x,event.y)
     print("点击位置：", pox, poy)
-    ttt=canvas.create_oval(event.x, event.y, event.x+10, event.y+10, fill="blue")
+    plottrack=canvas.create_oval(event.x, event.y, event.x + 10, event.y + 10, fill="blue")
     # data = src_strlist[event.x, event.y]
-    x.append(ttt)
+    x.append(plottrack)
     # image.putpixel((event.x, event.y), (255,20,210))
 
     for i in range(pox):
@@ -311,8 +268,8 @@ def endkey():
 
 
 
-def callb1(event):
-    global ttt
+def click1(event):
+    global plottrack
     # line=0
     #
     # pixTuple = (255, 0, 255, 15)  ###三个参数依次为R,G,B,A   R：红 G:绿 B:蓝 A:透明度
@@ -322,7 +279,7 @@ def callb1(event):
 
     # print("点击位置：",event.x,event.y)
     print("点击位置：", event.x, event.y)
-    ttt=canvas1.create_oval(event.x, event.y, event.x+10, event.y+10, fill="blue")
+    plottrack=canvas1.create_oval(event.x, event.y, event.x + 10, event.y + 10, fill="blue")
 
     y = event.y
     realy = -4.8152 + (209.78461 / (1 + ((y / 32.21135) ** 1.3252)))
@@ -347,8 +304,8 @@ def callb1(event):
 
     print("对应转换坐标：",str(realx),str(realy))
     # print(realy)
-    ttt = canvas.create_oval(realx, realy, realx + 10, realy + 10, fill="blue")
-    x.append(ttt)
+    plottrack = canvas.create_oval(realx, realy, realx + 10, realy + 10, fill="blue")
+    x.append(plottrack)
 
 
 
@@ -381,8 +338,8 @@ if __name__=='__main__':
     # A = tkinter.Button(root, text="开始", command=startkey)
 
     B = tkinter.Button(root, text="结束", command=endkey)
-    C = tkinter.Button(root, text="计分板", command=helloCallBack)
-    D = tkinter.Button(root, text="枪数设置", command=helloCallBack)
+    C = tkinter.Button(root, text="计分板", command=CallBack)
+    D = tkinter.Button(root, text="枪数设置", command=CallBack)
     E = tkinter.Button(root, text="重置", command=callupdate)
 
 
@@ -396,7 +353,7 @@ if __name__=='__main__':
 
 
     canvas.create_image(300, 400, image=im)  # 使用create_image将图片添加到Canvas组件中
-    canvas.bind("<Button -1>", callbbb)
+    canvas.bind("<Button -1>", clickcanvas)
     root.bind("<Key>", printkey)
     canvas.pack()  # 将Canvas添加到主窗口
 
@@ -421,7 +378,7 @@ if __name__=='__main__':
     # print(w, h, f)
     im1 = ImageTk.PhotoImage(image1)
     canvas1.create_image(400, 300, image=im1)  # 使用create_image将图片添加到Canvas组件中
-    canvas1.bind("<Button -1>", callb1)
+    canvas1.bind("<Button -1>", click1)
     canvas1.pack()  # 将Canvas添加到主窗口
     root1.mainloop()
     root.mainloop()
